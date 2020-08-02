@@ -28,9 +28,6 @@ public class ProductController {
     @Autowired
     private DataServices dataServices;
 
-
-
-
     //http://localhost:8080/api/products/?orderBy=title&direction=DESC&page=0&pageSize=10
     @RequestMapping(value = "/", params = {
             "orderBy",
@@ -41,7 +38,6 @@ public class ProductController {
     public ResponseEntity<Page<ProductDTO>> findAll(@RequestParam("orderBy") String orderBy,
                                                     @RequestParam("direction") String direction, @RequestParam("page") int page,
                                                     @RequestParam("pageSize") int pageSize) {
-
         if (!(direction.equals(Direction.ASCENDING.getDirectionCode())
                 || direction.equals(Direction.DESCENDING.getDirectionCode()))) {
             throw new PaginationSortingException("Invalid sort direction");
@@ -49,7 +45,6 @@ public class ProductController {
         if (!(orderBy.equals(OrderBy.productId.getOrderByCode()) || orderBy.equals(OrderBy.title.getOrderByCode()))) {
             throw new PaginationSortingException("Invalid orderBy condition");
         }
-
         Page<ProductDTO> list= dataServices.productService
                 .getAllProducts(orderBy,direction,page,pageSize).map(p -> {
                     ProductDTO p1 = new ProductDTO();
@@ -57,7 +52,6 @@ public class ProductController {
                     p1.setDescription(p.getDescription());
                     p1.setPrice(p.getPrice());
                     p1.setTitle(p.getTitle());
-
                     p1.setProductImage(p.getProductImage().stream()
                             .map(item -> {
                                 ProductImageDTO piDto = new ProductImageDTO();
@@ -135,7 +129,6 @@ public class ProductController {
             //return ResponseEntity.badRequest().body(e.getMessage());
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @PutMapping("/{id}")
@@ -157,8 +150,6 @@ public class ProductController {
                             return pIm;
                         }).collect(Collectors.toList()));
             }
-
-;
             //product.setProductImage(productDto.);
             product.setProductId(productDto.getProductId());
             boolean status = dataServices.productService.updateProduct(id,product);
@@ -170,7 +161,6 @@ public class ProductController {
         }
 
     }
-
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
