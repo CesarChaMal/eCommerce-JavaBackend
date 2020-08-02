@@ -63,6 +63,7 @@ public class UserService {
         byte[] valueDecoded = Base64.encodeBase64(randomBytes);
         return new String(valueDecoded);
     }
+
     public ResponseEntity<JwtDTO> createToken(UserLogin userLogin) throws NoSuchProviderException, NoSuchAlgorithmException {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userLogin.getUserName(), userLogin.getPassword())
@@ -73,6 +74,4 @@ public class UserService {
         JwtDTO jwtDTO = new JwtDTO(jwt, userDetails.getUsername(),buildToken(), userDetails.getAuthorities());
         return new ResponseEntity<JwtDTO>(jwtDTO, HttpStatus.OK);
     }
-
-
 }

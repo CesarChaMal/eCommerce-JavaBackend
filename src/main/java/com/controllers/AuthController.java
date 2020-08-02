@@ -21,8 +21,8 @@ import java.security.NoSuchProviderException;
 @CrossOrigin(origins = "*")
 public class AuthController {
 
-    @Autowired
-    DataServices dataServices;
+  @Autowired
+  private DataServices dataServices;
 
     @PostMapping("/sign-up")
     public ResponseEntity<?> createUser(@Valid @RequestBody NewUser newUser, BindingResult bindingResult) throws NoSuchProviderException, NoSuchAlgorithmException {
@@ -36,7 +36,7 @@ public class AuthController {
         dataServices.userService.createUser(user);
 
         UserLogin userLogin = new UserLogin(user.getUserName(),newUser.getPassword());
-        ResponseEntity<JwtDTO> jwt= dataServices.userService.createToken(userLogin);
+        ResponseEntity<JwtDTO> jwt=dataServices.userService.createToken(userLogin);
         return  jwt;
     }
 
@@ -45,11 +45,6 @@ public class AuthController {
 
         if(bindingResult.hasErrors())
             return new ResponseEntity("campos vacíos o email inválido", HttpStatus.BAD_REQUEST);
-
-
-        return  dataServices.userService.createToken(userLogin);
-
+        return dataServices.userService.createToken(userLogin);
     }
-
-
 }
